@@ -1,2 +1,6 @@
-example/opengraph
+example/db.sqlite3
 *.pyc
+env
+build
+django_opengraph.egg-info
+opengraph.egg-info

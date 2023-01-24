@@ -1,4 +1,4 @@
-# OpenGraph App for Django >= 1.4
+# OpenGraph App for Django >= 4.x
 
 Adds HTML Meta tags for OpenGraph support.
 

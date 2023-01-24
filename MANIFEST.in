@@ -1,0 +1,5 @@
+include LICENSE
+include AUTHORS
+include README.markdown
+recursive-include opengraph/static *
+recursive-include opengraph/templates *
