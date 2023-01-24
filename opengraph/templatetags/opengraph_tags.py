@@ -15,14 +15,16 @@ def opengraph(context, *args, **kwargs):
 
 
 @register.inclusion_tag("opengraph/base.html", takes_context=True)
-def opengraph_from_object(context, instance):
+def opengraph_from_object(context, instance, *args, **kwargs):
     request = context["request"]
     config = getattr(settings, "OPENGRAPH_CONFIG", {})
     object_translators = config.get("OBJECT_TRANSLATOR", {})
     specific_translator = (
         object_translators.get(instance.__class__.__name__, None) or dummy_translator
     )
-    return get_opengraph_attributes(context, specific_translator(request, instance))
+    data = specific_translator(request, instance)
+    data.update(kwargs)
+    return get_opengraph_attributes(context, data)
 
 
 def get_opengraph_attributes(context, kwargs):

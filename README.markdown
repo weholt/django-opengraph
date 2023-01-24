@@ -155,7 +155,7 @@ def blogpage_translator(request, instance):
       "title": instance.title,
       "description": instance.intro,
       "image": instance.cover.url,
-      "keywords": ", ".join([tag for tag in instance.tags.all()])
+      "keywords": ", ".join([tag.name for tag in instance.tags.all()])
     }
 
 OPENGRAPH_CONFIG = {
@@ -164,7 +164,18 @@ OPENGRAPH_CONFIG = {
 }
 ```
 
-In your template, you can now just pass the page instance to the opengraph_from_object-tag, and it will map the properties for you.
+In your template, you can now just pass the page instance to the opengraph_from_object-tag, and it will map the properties for you. Like so:
+
+```
+{% load opengraph_tags %}
+
+{% block extra_head %}
+{% image page.cover original as tmp_photo %}
+{% with photo_url=tmp_photo.url %}
+{% opengraph_from_object page image=photo_url %}
+{% endwith %}
+{% endblock %}
+```
 
 A more 
 ## Version history
