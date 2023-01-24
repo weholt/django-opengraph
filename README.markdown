@@ -128,53 +128,45 @@ The result, including the use of the OPENGRAPH_CONFIG options defined above, wou
   An image URL which should represent your object within the graph.  
   Defaults to `DEFAULT_IMAGE` if defined in `OPENGRAPH_CONFIG`
 
+## Opengraph-from-object Tag
+
 ```
 {% opengraph_from_object instance %}
 ```
 Will try to look for properties on the instance mapping to the ones required. You can also specify your own object translator to do the mapping manually, if it isn't 1:1.
 The callable takes to arguments, the request object and the instance itself. It should return a dictionary.
 
-Something like this in your views/urls:
+For instance, when creating a blog in Wagtail, you might write something like this:
 
 ```
-class Post:
-    title = "Title from an object"
-    description = "Description from an object"
-    keywords = "Keywords, from, an, object"
-    author = "Author from an object"
-    locale = "Locale from an object"
-    twitter_card = "summary"
-    url = "github.com"
-    image = "https://picsum.photos/200/300"
-    site_name = "Acme Inc"
-
-
-class HomeView(TemplateView):
-    template_name = "base.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["post"] = Post()
-        return context
-
-
-urlpatterns = [
-    path("", HomeView.as_view()),
-]
+class BlogPage(Page):
+    date = models.DateField("Post date")
+    intro = models.CharField(max_length=250)
+    cover = models.ForeignKey("wagtailimages.Image", null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    .... More fields here ...
+    tags = ClusterTaggableManager(through=BlogPageTag, blank=True)    
 ```
 
 And in your settings you map your translator to your object class:
 
 ```
-def my_translator(request, instance):
-    return {"title": request.user}
+def blogpage_translator(request, instance):
+    return {
+      "title": instance.title,
+      "description": instance.intro,
+      "image": instance.cover.url,
+      "keywords": ", ".join([tag for tag in instance.tags.all()])
+    }
 
 OPENGRAPH_CONFIG = {
   ...    
-  "OBJECT_TRANSLATOR": {"Post": my_translator},
+  "OBJECT_TRANSLATOR": {"BlogPage": blogpage_translator},
 }
 ```
 
+In your template, you can now just pass the page instance to the opengraph_from_object-tag, and it will map the properties for you.
+
+A more 
 ## Version history
 
 0.0.6 : 
