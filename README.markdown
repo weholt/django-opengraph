@@ -54,10 +54,18 @@ Assume the following configuration:
 
 ```python
 OPENGRAPH_CONFIG = {
-    'FB_ADMINS': '123',
-    'FB_APP_ID': '456',
-    'DEFAULT_IMAGE': '%sdefault/image.png' % STATIC_URL,
-    'SITE_NAME': 'Your Site Name',
+    "FB_ADMINS": "123",
+    "FB_APP_ID": "456",
+    "SITE_NAME": "National Priorities Project",
+    "DEFAULT_IMAGE": "%simages/default.png" % STATIC_URL,
+    "DEFAULT_TITLE": "Default title",
+    "DEFAULT_DESCRIPTION": "Default description",
+    "DEFAULT_KEYWORDS": "Default, Keywords, Goes, Here",
+    "DEFAULT_AUTHOR": "Your name",
+    "DEFAULT_TYPE": "website",
+    "DEFAULT_URL": "Default url",
+    "DEFAULT_LOCALE": "en_EN",
+    "DEFAULT_TWITTER_CARD": "summary" | "summary_large_image" | "app" | "player"
 }
 ```
 
@@ -120,3 +128,38 @@ The result, including the use of the OPENGRAPH_CONFIG options defined above, wou
   An image URL which should represent your object within the graph.  
   Defaults to `DEFAULT_IMAGE` if defined in `OPENGRAPH_CONFIG`
 
+```
+{% opengraph_from_object instance %}
+```
+Will try to look for properties on the instance mapping to the ones required. You can also specify your own object translator to do the mapping manually, if it isn't 1:1.
+The callable takes to arguments, the request object and the instance itself. It should return a dictionary.
+
+```
+def my_translator(request, instance):
+    return {"title": request.user}
+
+OPENGRAPH_CONFIG = {
+    "FB_ADMINS": "123",
+    "FB_APP_ID": "456",
+    "SITE_NAME": "National Priorities Project",
+    "DEFAULT_IMAGE": "%simages/default.png" % STATIC_URL,
+    "DEFAULT_TITLE": "Default title",
+    "DEFAULT_DESCRIPTION": "Default description",
+    "DEFAULT_KEYWORDS": "Default, Keywords, Goes, Here",
+    "DEFAULT_AUTHOR": "Your name",
+    "DEFAULT_TYPE": "website",
+    "DEFAULT_URL": "Default url",
+    "DEFAULT_LOCALE": "en_EN",
+    "DEFAULT_TWITTER_CARD": "summary_large_image",  # "“summary” | “summary_large_image” | “app” | “player”
+    "OBJECT_TRANSLATOR": {"Post": my_translator},
+}
+```
+
+## Version history
+
+0.0.6 : 
+ - base version
+
+0.0.7 : 
+ - rewrite to work with Python >= 3.8 and Django >= 4.x
+ - new template tag taking an instance as parameter

@@ -2,11 +2,9 @@ from typing import List
 
 from django import template
 from django.conf import settings
+from django.core.validators import EMPTY_VALUES
 
 from opengraph.object_translator import dummy_translator
-
-# from django.core.validators import EMPTY_VALUES
-
 
 register = template.Library()
 

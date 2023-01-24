@@ -124,8 +124,8 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-def my_translator(instance):
-    return {"title": "Just a title"}
+def my_translator(request, instance):
+    return {"title": request.user}
 
 
 OPENGRAPH_CONFIG = {
@@ -145,10 +145,11 @@ OPENGRAPH_CONFIG = {
 }
 
 OPENGRAPH_CONFIG = {
-    "FB_ADMINS": "123",
-    "FB_APP_ID": "456",
-    "SITE_NAME": "National Priorities Project",
-    "DEFAULT_IMAGE": "%simages/default.png" % STATIC_URL,
-    "DEFAULT_AUTHOR": "Your name",
-    "DEFAULT_LOCALE": "en_EN",
+    # "FB_ADMINS": "123",
+    # "FB_APP_ID": "456",
+    # "SITE_NAME": "National Priorities Project",
+    # "DEFAULT_IMAGE": "%simages/default.png" % STATIC_URL,
+    # "DEFAULT_AUTHOR": "Your name",
+    # "DEFAULT_LOCALE": "en_EN",
+    "OBJECT_TRANSLATOR": {"Post": my_translator},
 }
