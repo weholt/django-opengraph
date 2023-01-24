@@ -134,24 +134,44 @@ The result, including the use of the OPENGRAPH_CONFIG options defined above, wou
 Will try to look for properties on the instance mapping to the ones required. You can also specify your own object translator to do the mapping manually, if it isn't 1:1.
 The callable takes to arguments, the request object and the instance itself. It should return a dictionary.
 
+Something like this in your views/urls:
+
+```
+class Post:
+    title = "Title from an object"
+    description = "Description from an object"
+    keywords = "Keywords, from, an, object"
+    author = "Author from an object"
+    locale = "Locale from an object"
+    twitter_card = "summary"
+    url = "github.com"
+    image = "https://picsum.photos/200/300"
+    site_name = "Acme Inc"
+
+
+class HomeView(TemplateView):
+    template_name = "base.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["post"] = Post()
+        return context
+
+
+urlpatterns = [
+    path("", HomeView.as_view()),
+]
+```
+
+And in your settings you map your translator to your object class:
+
 ```
 def my_translator(request, instance):
     return {"title": request.user}
 
 OPENGRAPH_CONFIG = {
-    "FB_ADMINS": "123",
-    "FB_APP_ID": "456",
-    "SITE_NAME": "National Priorities Project",
-    "DEFAULT_IMAGE": "%simages/default.png" % STATIC_URL,
-    "DEFAULT_TITLE": "Default title",
-    "DEFAULT_DESCRIPTION": "Default description",
-    "DEFAULT_KEYWORDS": "Default, Keywords, Goes, Here",
-    "DEFAULT_AUTHOR": "Your name",
-    "DEFAULT_TYPE": "website",
-    "DEFAULT_URL": "Default url",
-    "DEFAULT_LOCALE": "en_EN",
-    "DEFAULT_TWITTER_CARD": "summary_large_image",  # "“summary” | “summary_large_image” | “app” | “player”
-    "OBJECT_TRANSLATOR": {"Post": my_translator},
+  ...    
+  "OBJECT_TRANSLATOR": {"Post": my_translator},
 }
 ```
 
