@@ -9,6 +9,8 @@
 {% if url %}<link rel="canonical" href="{{url}}"/>{% endif %}
 {% for img in images %}<meta property="og:image" content="{{ img }}">{% endfor %}
 {% if site_name %}<meta property="og:site_name" content="{{ site_name }}">{% endif %}
+{% if audio %}<meta property="og:audio" content="{{ audio }}">{% endif %}
+{% if video %}<meta property="og:video" content="{{ video }}">{% endif %}
 {% if locale %}<meta property="og:locale" content="{{ locale }}">{% endif %}
 {% if twitter_card %}<meta property="twitter:card" content="{{ twitter_card }}">{% endif %}
 {% if fb_admins %}<meta property="fb:admins" content="{{ fb_admins }}">{% endif %}

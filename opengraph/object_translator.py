@@ -12,6 +12,8 @@ def dummy_translator(request, instance):
             "twitter_card",
             "url",
             "image",
+            "video",
+            "audio",
             "fb_admins",
             "fb_app_id",
             "site_name",

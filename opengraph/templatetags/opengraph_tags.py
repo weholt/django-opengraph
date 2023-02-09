@@ -10,12 +10,14 @@ register = template.Library()
 
 
 @register.inclusion_tag("opengraph/base.html", takes_context=True)
-def opengraph(context, *args, **kwargs):
+def opengraph(context, **kwargs):
+    """ """
     return get_opengraph_attributes(context, kwargs)
 
 
 @register.inclusion_tag("opengraph/base.html", takes_context=True)
-def opengraph_from_object(context, instance, *args, **kwargs):
+def opengraph_from_object(context, instance, **kwargs):
+    """ """
     request = context["request"]
     config = getattr(settings, "OPENGRAPH_CONFIG", {})
     object_translators = config.get("OBJECT_TRANSLATOR", {})
@@ -28,6 +30,7 @@ def opengraph_from_object(context, instance, *args, **kwargs):
 
 
 def get_opengraph_attributes(context, kwargs):
+    """ """
     request = context["request"]
     config = getattr(settings, "OPENGRAPH_CONFIG", {})
 
@@ -40,6 +43,8 @@ def get_opengraph_attributes(context, kwargs):
         "locale": kwargs.get("locale", config.get("DEFAULT_LOCALE", "en")),
         "twitter_card": kwargs.get("twitter_card", config.get("DEFAULT_TWITTER_CARD")),
         "url": kwargs.get("url", request.build_absolute_uri()),
+        "audio": kwargs.get("audio", None),
+        "video": kwargs.get("audio", None),
         "image": kwargs.get("image"),
     }
 
@@ -65,6 +70,7 @@ def get_opengraph_attributes(context, kwargs):
 
 
 def normalize_image_url(request, image):
+    """ """
     if image is None or image[:4] == "http":
         return image
     protocol = "http"
