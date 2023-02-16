@@ -1,5 +1,9 @@
 # OpenGraph App for Django >= 4.x
 
+Note! This is a fork of the https://github.com/leveille/django-opengraph repository, which lacked support
+for audio and video tags. I've also included support for getting properties from an object instance, using a
+"object translator". The translator function can be specified in settings.py and be customized to your hearts content.
+
 Adds HTML Meta tags for OpenGraph support.
 
 * [OpenGraph](http://ogp.me/)
@@ -8,13 +12,13 @@ Adds HTML Meta tags for OpenGraph support.
 ## Installation
 
 ```
-pip install -e git+git://github.com/leveille/django-opengraph.git#egg=opengraph
+pip install -e git+git://github.com/weholt/django-opengraph.git#egg=opengraph
 ```
 
 ## Upgrade
 
 ```
-pip install -U -e git+git://github.com/leveille/django-opengraph.git#egg=opengraph
+pip install -U -e git+git://github.com/weholt/django-opengraph.git#egg=opengraph
 ```
 
 ## Usage
@@ -134,7 +138,8 @@ The result, including the use of the OPENGRAPH_CONFIG options defined above, wou
 {% opengraph_from_object instance %}
 ```
 Will try to look for properties on the instance mapping to the ones required. You can also specify your own object translator to do the mapping manually, if it isn't 1:1.
-The callable takes to arguments, the request object and the instance itself. It should return a dictionary.
+
+The callable takes two arguments, the request object and the instance itself. It should return a dictionary.
 
 For instance, when creating a blog in Wagtail, you might write something like this:
 
@@ -186,3 +191,8 @@ A more
 0.0.7 : 
  - rewrite to work with Python >= 3.8 and Django >= 4.x
  - new template tag taking an instance as parameter
+
+## Known issues
+
+The generated html is a bit verbose and contain a lot of whitespace if not all the properties are being used. 
+I'm working on fixing this, but any information about how to avoid this is highly appreciated. Email me at thomas@weholt.org.
